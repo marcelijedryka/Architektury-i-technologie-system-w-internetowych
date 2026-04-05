@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 *.env
+/.claude
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -371,6 +372,22 @@ MSBuild_Logs/
 
 # AWS SAM Build and Temporary Artifacts folder
 .aws-sam
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+
+# Build output
+backend/dist/
+frontend/dist/
+
+# Superpowers visual companion
+.superpowers/
+
+# Project docs (specs, plans)
+docs/
 
 # NVidia Nsight GPU debugger configuration file
 *.nvuser

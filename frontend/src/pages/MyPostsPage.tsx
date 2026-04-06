@@ -41,7 +41,7 @@ export default function MyPostsPage() {
 
       <div className="flex items-center justify-between mt-6 mb-4">
         <h1 className="text-2xl font-bold text-[var(--text)]">{t.myPostsTitle}</h1>
-        <Link to="/upload" className="px-4 py-2 rounded bg-[var(--accent)] text-white text-sm hover:opacity-90">
+        <Link to="/upload" className="px-4 py-2 rounded bg-[var(--accent)] text-[var(--on-accent)] text-sm hover:opacity-90">
           + {t.addPhoto}
         </Link>
       </div>

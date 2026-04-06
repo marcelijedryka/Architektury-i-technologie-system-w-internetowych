@@ -17,7 +17,7 @@ export function UserMenu() {
   }, [])
 
   if (!user) return (
-    <Link to="/login" className="px-3 py-1.5 rounded bg-[var(--accent)] text-white text-sm font-medium hover:opacity-90">
+    <Link to="/login" className="px-3 py-1.5 rounded bg-[var(--accent)] text-[var(--on-accent)] text-sm font-medium hover:opacity-90">
       {t.login}
     </Link>
   )
@@ -30,7 +30,7 @@ export function UserMenu() {
         aria-expanded={open}
         className="flex items-center gap-2 px-3 py-1.5 rounded border border-[var(--border)] bg-[var(--surface)] text-sm hover:border-[var(--accent)]"
       >
-        <span className="w-6 h-6 rounded-full bg-[var(--accent)] text-white flex items-center justify-center text-xs font-bold">
+        <span className="w-6 h-6 rounded-full bg-[var(--accent)] text-[var(--on-accent)] flex items-center justify-center text-xs font-bold">
           {user.name[0].toUpperCase()}
         </span>
         <span className="max-w-[120px] truncate">{user.name}</span>

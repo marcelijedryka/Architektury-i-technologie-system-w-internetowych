@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import { AuthProvider } from './context/AuthContext'
 import { LangProvider } from './context/LangContext'
+import { FontSizeProvider } from './context/FontSizeContext'
 import { Header } from './components/layout/Header'
 import { useAuth } from './context/AuthContext'
 import { lazy, Suspense } from 'react'
@@ -49,11 +50,13 @@ export default function App() {
   return (
     <ThemeProvider>
       <LangProvider>
-        <AuthProvider>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </AuthProvider>
+        <FontSizeProvider>
+          <AuthProvider>
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </AuthProvider>
+        </FontSizeProvider>
       </LangProvider>
     </ThemeProvider>
   )

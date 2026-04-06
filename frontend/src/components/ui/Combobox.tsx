@@ -118,7 +118,7 @@ export function Combobox({ options, value, onChange, placeholder, label, require
               onMouseDown={() => select(opt)}
               className={`px-3 py-2 text-sm cursor-pointer
                 ${opt.value === value
-                  ? 'bg-[var(--accent)] text-white'
+                  ? 'bg-[var(--accent)] text-[var(--on-accent)]'
                   : 'text-[var(--text)] hover:bg-[var(--surface)]'
                 }`}
             >

@@ -15,7 +15,7 @@ export default function AccountPage() {
         <h1 className="text-2xl font-bold text-[var(--text)] mb-6">Moje konto</h1>
         <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-6 space-y-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-[var(--accent)] text-white flex items-center justify-center text-2xl font-bold">
+            <div className="w-14 h-14 rounded-full bg-[var(--accent)] text-[var(--on-accent)] flex items-center justify-center text-2xl font-bold">
               {user.name[0].toUpperCase()}
             </div>
             <div>
@@ -29,7 +29,7 @@ export default function AccountPage() {
               <dd className="font-medium">{ROLE_LABELS[user.role]}</dd>
             </div>
           </dl>
-          <Link to="/my-posts" className="block text-center px-4 py-2 rounded bg-[var(--accent)] text-white text-sm hover:opacity-90">
+          <Link to="/my-posts" className="block text-center px-4 py-2 rounded bg-[var(--accent)] text-[var(--on-accent)] text-sm hover:opacity-90">
             Moje zdjęcia
           </Link>
         </div>

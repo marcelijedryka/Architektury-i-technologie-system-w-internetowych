@@ -35,7 +35,7 @@ export function SearchBar({ onSearch }: Props) {
         <input id="dateTo" type="text" value={dateTo} onChange={e => setDateTo(e.target.value)}
           placeholder="2000" className={`${inputClass} w-24`} />
       </div>
-      <button type="submit" className="px-4 py-2 rounded bg-[var(--accent)] text-white text-sm hover:opacity-90">
+      <button type="submit" className="px-4 py-2 rounded bg-[var(--accent)] text-[var(--on-accent)] text-sm hover:opacity-90">
         {t.search}
       </button>
     </form>

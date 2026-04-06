@@ -7,7 +7,7 @@ export function FilterChips({ chips, onRemove }: Props) {
   return (
     <div className="flex flex-wrap gap-2" role="group" aria-label="Aktywne filtry">
       {chips.map(chip => (
-        <span key={chip.key} className="flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-[var(--accent)] text-white">
+        <span key={chip.key} className="flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-[var(--accent)] text-[var(--on-accent)]">
           {chip.label}
           <button onClick={() => onRemove(chip.key)} aria-label={`Usuń filtr: ${chip.label}`}
             className="ml-1 hover:opacity-75">✕</button>

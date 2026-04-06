@@ -71,9 +71,11 @@ export default function HomePage() {
         ...(filters.city ? [{ label: filters.city }] : []),
       ]} />
 
-      <div className="mt-4 space-y-4">
-        <HierarchyDropdowns onLocationChange={loc => setFilters(f => ({ ...f, ...loc }))} />
-        <SearchBar onSearch={params => setFilters(f => ({ ...f, ...params }))} />
+      <div className="mt-4 space-y-3">
+        <div className="flex flex-wrap gap-2 items-end">
+          <HierarchyDropdowns onLocationChange={loc => setFilters(f => ({ ...f, ...loc }))} />
+          <SearchBar onSearch={params => setFilters(f => ({ ...f, ...params }))} />
+        </div>
         <FilterChips chips={activeChips} onRemove={removeFilter} />
       </div>
 
@@ -87,7 +89,7 @@ export default function HomePage() {
             aria-pressed={sort === mode}
             className={`px-3 py-1 rounded-full text-xs border transition-colors
               ${sort === mode
-                ? 'bg-[var(--accent)] text-white border-[var(--accent)]'
+                ? 'bg-[var(--accent)] text-[var(--on-accent)] border-[var(--accent)]'
                 : 'bg-[var(--surface)] text-[var(--text-muted)] border-[var(--border)] hover:border-[var(--accent)]'
               }`}
           >

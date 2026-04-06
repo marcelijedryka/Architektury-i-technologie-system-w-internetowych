@@ -3,11 +3,20 @@ import { ThemeSwitcher } from './ThemeSwitcher'
 import { UserMenu } from './UserMenu'
 import { useAuth } from '../../context/AuthContext'
 import { useLang } from '../../context/LangContext'
+import { useFontSize } from '../../context/FontSizeContext'
 import type { Lang } from '../../translations'
+import type { FontSize } from '../../context/FontSizeContext'
+
+const FONT_SIZE_LABELS: Record<FontSize, string> = {
+  small: 'A-',
+  normal: 'A',
+  large: 'A+',
+}
 
 export function Header() {
   const { user } = useAuth()
   const { lang, t, setLang } = useLang()
+  const { fontSize, setFontSize } = useFontSize()
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]" role="banner">
@@ -19,6 +28,7 @@ export function Header() {
           {user && (user.role === 'CREATOR' || user.role === 'ADMIN') && (
             <Link to="/upload" className="text-sm hover:text-[var(--accent)]">{t.addPhoto}</Link>
           )}
+
           <div className="flex items-center gap-1" role="group" aria-label="Język / Language">
             {(['pl', 'en'] as Lang[]).map(l => (
               <button
@@ -27,7 +37,7 @@ export function Header() {
                 aria-pressed={lang === l}
                 className={`px-2 py-1 rounded text-xs font-medium transition-colors
                   ${lang === l
-                    ? 'bg-[var(--accent)] text-white'
+                    ? 'bg-[var(--accent)] text-[var(--on-accent)]'
                     : 'bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--accent)]'
                   }`}
               >
@@ -35,6 +45,26 @@ export function Header() {
               </button>
             ))}
           </div>
+
+          <div className="flex items-center gap-1" role="group" aria-label="Rozmiar czcionki / Font size">
+            {(['small', 'normal', 'large'] as FontSize[]).map(s => (
+              <button
+                key={s}
+                onClick={() => setFontSize(s)}
+                aria-pressed={fontSize === s}
+                aria-label={`Font size ${s}`}
+                className={`px-2 py-1 rounded font-medium transition-colors
+                  ${s === 'small' ? 'text-xs' : s === 'normal' ? 'text-sm' : 'text-base'}
+                  ${fontSize === s
+                    ? 'bg-[var(--accent)] text-[var(--on-accent)]'
+                    : 'bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--accent)]'
+                  }`}
+              >
+                {FONT_SIZE_LABELS[s]}
+              </button>
+            ))}
+          </div>
+
           <ThemeSwitcher />
           <UserMenu />
         </nav>

@@ -38,7 +38,7 @@ export function Header() {
                 className={`px-2 py-1 rounded text-xs font-medium transition-colors
                   ${lang === l
                     ? 'bg-[var(--accent)] text-[var(--on-accent)]'
-                    : 'bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--accent)]'
+                    : 'bg-[var(--surface)] text-[var(--text)] hover:text-[var(--accent)]'
                   }`}
               >
                 {l.toUpperCase()}
@@ -57,7 +57,7 @@ export function Header() {
                   ${s === 'small' ? 'text-xs' : s === 'normal' ? 'text-sm' : 'text-base'}
                   ${fontSize === s
                     ? 'bg-[var(--accent)] text-[var(--on-accent)]'
-                    : 'bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--accent)]'
+                    : 'bg-[var(--surface)] text-[var(--text)] hover:text-[var(--accent)]'
                   }`}
               >
                 {FONT_SIZE_LABELS[s]}

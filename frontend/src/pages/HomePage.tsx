@@ -71,6 +71,8 @@ export default function HomePage() {
         ...(filters.city ? [{ label: filters.city }] : []),
       ]} />
 
+      <h1 className="sr-only">{t.home}</h1>
+
       <div className="mt-4 space-y-3">
         <div className="flex flex-wrap gap-2 items-end">
           <HierarchyDropdowns onLocationChange={loc => setFilters(f => ({ ...f, ...loc }))} />
@@ -90,7 +92,7 @@ export default function HomePage() {
             className={`px-3 py-1 rounded-full text-xs border transition-colors
               ${sort === mode
                 ? 'bg-[var(--accent)] text-[var(--on-accent)] border-[var(--accent)]'
-                : 'bg-[var(--surface)] text-[var(--text-muted)] border-[var(--border)] hover:border-[var(--accent)]'
+                : 'bg-[var(--surface)] text-[var(--text)] border-[var(--border)] hover:border-[var(--accent)]'
               }`}
           >
             {mode === 'latest' ? t.latest : t.popular}

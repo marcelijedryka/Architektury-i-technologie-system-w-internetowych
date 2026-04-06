@@ -27,7 +27,7 @@ export function PhotoCard({ material, onClick, actions, isLiked, onLike }: Props
           />
         </div>
         <div className="p-3 pb-2">
-          <h3 className="font-medium text-sm text-[var(--text)] truncate">{material.title}</h3>
+          <h2 className="font-medium text-sm text-[var(--text)] truncate">{material.title}</h2>
           <p className="text-xs text-[var(--text-muted)] mt-0.5">{material.photoDate}</p>
         </div>
       </button>
@@ -38,7 +38,7 @@ export function PhotoCard({ material, onClick, actions, isLiked, onLike }: Props
             onClick={e => { e.stopPropagation(); onLike(material.materialId) }}
             aria-label={isLiked ? t.unlike : t.like}
             aria-pressed={isLiked}
-            className={`flex items-center gap-1.5 text-sm transition-colors
+            className={`flex items-center gap-1.5 text-sm transition-colors min-w-[44px] min-h-[44px] justify-start
               ${isLiked ? 'text-red-500' : 'text-[var(--text-muted)] hover:text-red-400'}`}
           >
             <span aria-hidden="true">{isLiked ? '♥' : '♡'}</span>

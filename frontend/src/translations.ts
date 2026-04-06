@@ -1,0 +1,271 @@
+export const translations = {
+  pl: {
+    // App / Header
+    archive: 'Archiwum',
+    addPhoto: 'Dodaj zdjęcie',
+    loading: 'Ładowanie...',
+
+    // Auth
+    login: 'Zaloguj się',
+    loginGoogle: 'Zaloguj przez Google',
+    loginOrEmail: 'lub email i hasło',
+    loginError: 'Nieprawidłowy email lub hasło',
+    logging: 'Logowanie...',
+    noAccount: 'Nie masz konta?',
+    register: 'Zarejestruj się',
+    registerTitle: 'Zarejestruj się',
+    name: 'Imię i nazwisko',
+    email: 'Email',
+    password: 'Hasło',
+    registerError: 'Rejestracja nie powiodła się. Spróbuj ponownie.',
+    registering: 'Rejestracja...',
+    haveAccount: 'Masz już konto?',
+    logout: 'Wyloguj się',
+    myAccount: 'Moje konto',
+    myPhotos: 'Moje zdjęcia',
+    adminPanel: 'Panel admina',
+
+    // HomePage
+    home: 'Strona główna',
+    sortBy: 'Sortuj:',
+    latest: '🕐 Najnowsze',
+    popular: '♥ Najpopularniejsze',
+
+    // Filters / Search
+    filterByLocation: 'Filtrowanie po lokalizacji',
+    allContinents: 'Wszystkie kontynenty',
+    allRegions: 'Wszystkie regiony',
+    allCities: 'Wszystkie miasta',
+    allStreets: 'Wszystkie ulice',
+    continent: 'Kontynent',
+    region: 'Region',
+    countryLabel: 'Kraj',
+    countryPlaceholder: 'np. Polska',
+    cityPlaceholder: 'np. Warszawa',
+    city: 'Miasto',
+    street: 'Ulica',
+    searchPlaceholder: 'Szukaj...',
+    search: 'Szukaj',
+    dateFrom: 'Data od',
+    dateTo: 'Data do',
+
+    // Filter chips
+    chipContinent: 'Kontynent',
+    chipRegion: 'Region',
+    chipCity: 'Miasto',
+    chipPhrase: 'Fraza',
+    chipFrom: 'Od',
+    chipTo: 'Do',
+
+    // PhotoCard / PhotoDetail
+    like: 'Polub zdjęcie',
+    unlike: 'Usuń polubienie',
+    close: 'Zamknij',
+    date: 'Data',
+    addedBy: 'Dodane przez',
+    tags: 'Tagi',
+    noPhotos: 'Brak zdjęć spełniających kryteria',
+    clearFilters: 'Wyczyść filtry',
+
+    // UploadPage
+    uploadTitle: 'Dodaj zdjęcie',
+    uploadDrop: 'Przeciągnij zdjęcie lub kliknij',
+    uploadHint: 'JPG, PNG · maks. 10MB',
+    uploadPreview: 'Podgląd',
+    uploadDragLabel: 'Przeciągnij zdjęcie lub kliknij aby wybrać',
+    titleLabel: 'Tytuł',
+    descriptionLabel: 'Opis',
+    altTextLabel: 'Tekst alternatywny (dla czytników ekranu)',
+    photoDateLabel: 'Data zdjęcia',
+    photoDatePlaceholder: 'np. 1923 lub 1923-05',
+    tagsLabel: 'Tagi (opcjonalnie, oddzielone przecinkami)',
+    tagsPlaceholder: 'np. kościół, most, park',
+    chooseContinent: 'Wybierz kontynent',
+    chooseRegion: 'Wybierz region',
+    chooseCity: 'Wybierz miasto',
+    chooseStreet: 'Wybierz ulicę (opcjonalnie)',
+    uploadError: 'Wybierz zdjęcie',
+    uploadLocationError: 'Wybierz region i miasto',
+    uploadNetworkError: 'Wystąpił błąd podczas przesyłania. Spróbuj ponownie.',
+    uploading: 'Przesyłanie...',
+    submit: 'Prześlij zdjęcie',
+
+    // MyPostsPage
+    myPostsTitle: 'Moje zdjęcia',
+    noMyPosts: 'Nie masz jeszcze żadnych zdjęć',
+    edit: 'Edytuj',
+    delete: 'Usuń',
+    deleteConfirm: 'Usunąć to zdjęcie?',
+    status: 'Status',
+
+    // EditPostPage
+    editTitle: 'Edytuj zdjęcie',
+    save: 'Zapisz zmiany',
+    saving: 'Zapisywanie...',
+
+    // AccountPage
+    accountTitle: 'Moje konto',
+    accountName: 'Imię i nazwisko',
+    accountEmail: 'Email',
+    accountRole: 'Rola',
+    changePassword: 'Zmień hasło',
+    currentPassword: 'Obecne hasło',
+    newPassword: 'Nowe hasło',
+    passwordChanged: 'Hasło zostało zmienione',
+    passwordError: 'Błąd zmiany hasła',
+
+    // Admin
+    adminTitle: 'Panel administracyjny',
+    adminUsers: 'Użytkownicy',
+    adminPhotos: 'Zdjęcia',
+    adminHierarchy: 'Hierarchia',
+    adminNew: 'Nowe zdjęcia',
+    approve: 'Zatwierdź',
+    reject: 'Odrzuć',
+    block: 'Zablokuj',
+    unblock: 'Odblokuj',
+    addRegion: 'Dodaj region',
+    addCity: 'Dodaj miasto',
+    addStreet: 'Dodaj ulicę',
+    addContinent: 'Dodaj kontynent',
+
+    // Breadcrumb
+    breadcrumbHome: 'Strona główna',
+  },
+  en: {
+    // App / Header
+    archive: 'Archive',
+    addPhoto: 'Add photo',
+    loading: 'Loading...',
+
+    // Auth
+    login: 'Log in',
+    loginGoogle: 'Sign in with Google',
+    loginOrEmail: 'or email and password',
+    loginError: 'Invalid email or password',
+    logging: 'Logging in...',
+    noAccount: "Don't have an account?",
+    register: 'Register',
+    registerTitle: 'Create account',
+    name: 'Full name',
+    email: 'Email',
+    password: 'Password',
+    registerError: 'Registration failed. Please try again.',
+    registering: 'Registering...',
+    haveAccount: 'Already have an account?',
+    logout: 'Log out',
+    myAccount: 'My account',
+    myPhotos: 'My photos',
+    adminPanel: 'Admin panel',
+
+    // HomePage
+    home: 'Home',
+    sortBy: 'Sort:',
+    latest: '🕐 Latest',
+    popular: '♥ Most popular',
+
+    // Filters / Search
+    filterByLocation: 'Filter by location',
+    allContinents: 'All continents',
+    allRegions: 'All regions',
+    allCities: 'All cities',
+    allStreets: 'All streets',
+    continent: 'Continent',
+    region: 'Region',
+    countryLabel: 'Country',
+    countryPlaceholder: 'e.g. Poland',
+    cityPlaceholder: 'e.g. Warsaw',
+    city: 'City',
+    street: 'Street',
+    searchPlaceholder: 'Search...',
+    search: 'Search',
+    dateFrom: 'Date from',
+    dateTo: 'Date to',
+
+    // Filter chips
+    chipContinent: 'Continent',
+    chipRegion: 'Region',
+    chipCity: 'City',
+    chipPhrase: 'Phrase',
+    chipFrom: 'From',
+    chipTo: 'To',
+
+    // PhotoCard / PhotoDetail
+    like: 'Like photo',
+    unlike: 'Remove like',
+    close: 'Close',
+    date: 'Date',
+    addedBy: 'Added by',
+    tags: 'Tags',
+    noPhotos: 'No photos match the criteria',
+    clearFilters: 'Clear filters',
+
+    // UploadPage
+    uploadTitle: 'Add photo',
+    uploadDrop: 'Drag photo or click',
+    uploadHint: 'JPG, PNG · max 10MB',
+    uploadPreview: 'Preview',
+    uploadDragLabel: 'Drag photo here or click to select',
+    titleLabel: 'Title',
+    descriptionLabel: 'Description',
+    altTextLabel: 'Alt text (for screen readers)',
+    photoDateLabel: 'Photo date',
+    photoDatePlaceholder: 'e.g. 1923 or 1923-05',
+    tagsLabel: 'Tags (optional, comma-separated)',
+    tagsPlaceholder: 'e.g. church, bridge, park',
+    chooseContinent: 'Choose continent',
+    chooseRegion: 'Choose region',
+    chooseCity: 'Choose city',
+    chooseStreet: 'Choose street (optional)',
+    uploadError: 'Select a photo',
+    uploadLocationError: 'Select region and city',
+    uploadNetworkError: 'Upload failed. Please try again.',
+    uploading: 'Uploading...',
+    submit: 'Upload photo',
+
+    // MyPostsPage
+    myPostsTitle: 'My photos',
+    noMyPosts: "You don't have any photos yet",
+    edit: 'Edit',
+    delete: 'Delete',
+    deleteConfirm: 'Delete this photo?',
+    status: 'Status',
+
+    // EditPostPage
+    editTitle: 'Edit photo',
+    save: 'Save changes',
+    saving: 'Saving...',
+
+    // AccountPage
+    accountTitle: 'My account',
+    accountName: 'Full name',
+    accountEmail: 'Email',
+    accountRole: 'Role',
+    changePassword: 'Change password',
+    currentPassword: 'Current password',
+    newPassword: 'New password',
+    passwordChanged: 'Password changed',
+    passwordError: 'Password change failed',
+
+    // Admin
+    adminTitle: 'Admin panel',
+    adminUsers: 'Users',
+    adminPhotos: 'Photos',
+    adminHierarchy: 'Hierarchy',
+    adminNew: 'New photos',
+    approve: 'Approve',
+    reject: 'Reject',
+    block: 'Block',
+    unblock: 'Unblock',
+    addRegion: 'Add region',
+    addCity: 'Add city',
+    addStreet: 'Add street',
+    addContinent: 'Add continent',
+
+    // Breadcrumb
+    breadcrumbHome: 'Home',
+  },
+}
+
+export type Lang = keyof typeof translations
+export type T = typeof translations['pl']

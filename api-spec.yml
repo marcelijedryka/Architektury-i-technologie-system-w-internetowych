@@ -1,0 +1,729 @@
+openapi: 3.0.3
+info:
+  title: Archiwum Społeczne API
+  description: >
+    REST API for the Digital Community Archive application.
+    Allows browsing and searching historical photos (public),
+    and uploading/managing materials for authenticated creators and admins.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+tags:
+  - name: Auth
+    description: Registration, login, logout and session management
+  - name: Materials
+    description: Photo archive — search, upload, edit, delete
+  - name: Hierarchy
+    description: Geographic hierarchy (continents → regions → cities → streets)
+  - name: Users
+    description: User management (admin only)
+
+# Authentication is via httpOnly cookie (access_token) set on login/register.
+# Protected endpoints require the cookie to be present.
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token
+
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        email:
+          type: string
+          example: jan@example.com
+        name:
+          type: string
+          example: Jan Kowalski
+        role:
+          type: string
+          enum: [VIEWER, CREATOR, ADMIN]
+        isBlocked:
+          type: boolean
+
+    Material:
+      type: object
+      properties:
+        materialId:
+          type: string
+          example: mat_01HZ
+        title:
+          type: string
+          example: Rynek Główny 1923
+        description:
+          type: string
+        altText:
+          type: string
+        photoDate:
+          type: string
+          example: "1923-05"
+        imageUrl:
+          type: string
+          format: uri
+        continent:
+          type: string
+          example: Europe
+        country:
+          type: string
+          example: Poland
+        city:
+          type: string
+          example: Kraków
+        regionId:
+          type: string
+        cityId:
+          type: string
+        streetId:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        likeCount:
+          type: integer
+        uploadedBy:
+          type: string
+        uploadedAt:
+          type: string
+          format: date-time
+        deleted:
+          type: boolean
+
+    HierarchyItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+
+paths:
+
+  # ── AUTH ────────────────────────────────────────────────
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      description: Creates a local account and sets an httpOnly JWT cookie.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, name, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                name:
+                  type: string
+                password:
+                  type: string
+                  minLength: 6
+      responses:
+        "201":
+          description: User created and logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "409":
+          description: Email already in use
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Log in with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Logged in, JWT cookie set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "401":
+          description: Invalid credentials or account blocked
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Log out (clears JWT cookie)
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Logged out
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Get current authenticated user
+      description: Re-reads user from DB and re-issues token so role/block changes take effect.
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Current user info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "401":
+          description: Not authenticated
+
+  /auth/google:
+    get:
+      tags: [Auth]
+      summary: Initiate Google OAuth flow
+      description: Redirects the browser to Google's consent screen.
+      responses:
+        "302":
+          description: Redirect to Google
+
+  /auth/google/callback:
+    get:
+      tags: [Auth]
+      summary: Google OAuth callback
+      description: Handles the OAuth callback, sets JWT cookie, and redirects to the frontend.
+      responses:
+        "302":
+          description: Redirect to frontend after successful login
+
+  # ── MATERIALS ───────────────────────────────────────────
+
+  /materials:
+    get:
+      tags: [Materials]
+      summary: Search materials (public)
+      description: Returns approved materials matching the given filters. No authentication required.
+      parameters:
+        - in: query
+          name: continent
+          schema:
+            type: string
+          example: Europe
+        - in: query
+          name: country
+          schema:
+            type: string
+          example: Poland
+        - in: query
+          name: city
+          schema:
+            type: string
+          example: Kraków
+        - in: query
+          name: phrase
+          schema:
+            type: string
+          description: Full-text search in title and description
+        - in: query
+          name: dateFrom
+          schema:
+            type: string
+          example: "1900"
+        - in: query
+          name: dateTo
+          schema:
+            type: string
+          example: "1990"
+      responses:
+        "200":
+          description: List of materials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Material"
+
+    post:
+      tags: [Materials]
+      summary: Upload a new photo (CREATOR or ADMIN)
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file, title, description, altText, photoDate]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Image file (JPG or PNG, max 10 MB)
+                title:
+                  type: string
+                description:
+                  type: string
+                altText:
+                  type: string
+                photoDate:
+                  type: string
+                  example: "1923-05"
+                continent:
+                  type: string
+                country:
+                  type: string
+                city:
+                  type: string
+                regionId:
+                  type: string
+                cityId:
+                  type: string
+                streetId:
+                  type: string
+                tags:
+                  type: string
+                  description: JSON-encoded array of strings, e.g. '["kościół","park"]'
+      responses:
+        "201":
+          description: Material created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Material"
+        "400":
+          description: No file uploaded or validation error
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient role or account blocked
+
+  /materials/my:
+    get:
+      tags: [Materials]
+      summary: Get materials uploaded by the current user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: List of own materials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Material"
+        "401":
+          description: Not authenticated
+
+  /materials/my-liked-ids:
+    get:
+      tags: [Materials]
+      summary: Get IDs of materials liked by the current user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Array of materialId strings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "401":
+          description: Not authenticated
+
+  /materials/admin/new-since/{since}:
+    get:
+      tags: [Materials]
+      summary: Get materials uploaded since a given timestamp (ADMIN only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: since
+          required: true
+          schema:
+            type: string
+          description: ISO 8601 timestamp (URL-encoded)
+      responses:
+        "200":
+          description: List of new materials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Material"
+        "403":
+          description: Admin role required
+
+  /materials/{id}:
+    get:
+      tags: [Materials]
+      summary: Get a single material by ID (public)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Material object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Material"
+        "404":
+          description: Not found
+
+    patch:
+      tags: [Materials]
+      summary: Update a material (owner or ADMIN)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                altText:
+                  type: string
+                photoDate:
+                  type: string
+                continent:
+                  type: string
+                country:
+                  type: string
+                city:
+                  type: string
+                regionId:
+                  type: string
+                cityId:
+                  type: string
+                streetId:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: Updated material
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Material"
+        "403":
+          description: Not owner or blocked
+
+    delete:
+      tags: [Materials]
+      summary: Delete a material (soft-delete for owner, hard-delete for ADMIN)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+        "403":
+          description: Not owner or blocked
+
+  /materials/{id}/like:
+    post:
+      tags: [Materials]
+      summary: Toggle like on a material
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Like toggled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  liked:
+                    type: boolean
+                  likeCount:
+                    type: integer
+        "401":
+          description: Not authenticated
+
+  # ── HIERARCHY ───────────────────────────────────────────
+
+  /hierarchy/continents:
+    get:
+      tags: [Hierarchy]
+      summary: List all continents
+      responses:
+        "200":
+          description: Array of continent items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HierarchyItem"
+
+    post:
+      tags: [Hierarchy]
+      summary: Create a continent (ADMIN only)
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Continent created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HierarchyItem"
+        "403":
+          description: Admin role required
+
+  /hierarchy/continents/{id}/regions:
+    get:
+      tags: [Hierarchy]
+      summary: List regions for a continent
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of regions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HierarchyItem"
+
+    post:
+      tags: [Hierarchy]
+      summary: Create a region under a continent (ADMIN only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Region created
+
+  /hierarchy/regions/{id}/cities:
+    get:
+      tags: [Hierarchy]
+      summary: List cities for a region
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of cities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HierarchyItem"
+
+    post:
+      tags: [Hierarchy]
+      summary: Create a city under a region (ADMIN only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        "201":
+          description: City created
+
+  /hierarchy/cities/{id}/streets:
+    get:
+      tags: [Hierarchy]
+      summary: List streets for a city
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of streets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HierarchyItem"
+
+    post:
+      tags: [Hierarchy]
+      summary: Create a street under a city (ADMIN only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Street created
+
+  # ── USERS ───────────────────────────────────────────────
+
+  /users:
+    get:
+      tags: [Users]
+      summary: List all users (ADMIN only)
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Array of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+        "403":
+          description: Admin role required
+
+  /users/{email}/block:
+    post:
+      tags: [Users]
+      summary: Block a user (ADMIN only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User blocked
+        "403":
+          description: Admin role required
+
+  /users/{email}/unblock:
+    post:
+      tags: [Users]
+      summary: Unblock a user (ADMIN only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User unblocked
+        "403":
+          description: Admin role required

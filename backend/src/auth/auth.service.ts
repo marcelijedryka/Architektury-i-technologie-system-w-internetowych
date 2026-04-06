@@ -26,6 +26,7 @@ export class AuthService {
     if (!user || !user.passwordHash) throw new UnauthorizedException('Invalid credentials');
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) throw new UnauthorizedException('Invalid credentials');
+    if (user.isBlocked) throw new UnauthorizedException('Account is blocked');
     return user;
   }
 

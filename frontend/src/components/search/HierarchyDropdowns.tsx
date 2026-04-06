@@ -31,7 +31,7 @@ export function HierarchyDropdowns({ onLocationChange }: Props) {
   const inputClass = `${selectClass} min-w-[140px]`
 
   return (
-    <div className="flex gap-2 flex-wrap items-end" role="group" aria-label={t.filterByLocation}>
+    <>
       <div className="flex flex-col gap-1">
         <label htmlFor="continent-filter" className="text-xs text-[var(--text-muted)]">{t.continent}</label>
         <select id="continent-filter" value={continent} onChange={e => handleContinent(e.target.value)} className={selectClass}>
@@ -63,6 +63,6 @@ export function HierarchyDropdowns({ onLocationChange }: Props) {
           className={inputClass}
         />
       </div>
-    </div>
+    </>
   )
 }

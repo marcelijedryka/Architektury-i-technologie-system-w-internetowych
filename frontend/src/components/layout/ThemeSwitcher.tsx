@@ -18,7 +18,7 @@ export function ThemeSwitcher() {
           title={opt.label}
           className={`px-2 py-1 rounded text-sm border transition-colors
             ${theme === opt.value
-              ? 'bg-[var(--accent)] text-white border-[var(--accent)]'
+              ? 'bg-[var(--accent)] text-[var(--on-accent)] border-[var(--accent)]'
               : 'bg-[var(--surface)] text-[var(--text)] border-[var(--border)] hover:border-[var(--accent)]'
             }`}
         >

@@ -22,8 +22,9 @@ export default function LoginPage() {
     try {
       await login(email, password)
       navigate('/')
-    } catch {
-      setError(t.loginError)
+    } catch (err: any) {
+      const msg = err?.response?.data?.message ?? ''
+      setError(msg === 'Account is blocked' ? t.loginBlocked : t.loginError)
     } finally {
       setLoading(false)
     }

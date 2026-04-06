@@ -73,7 +73,7 @@ export default function AdminHierarchyPage() {
 
   const selectClass = 'rounded border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] text-sm px-3 py-2 focus:border-[var(--accent)] focus:outline-none w-full'
   const inputClass = 'rounded border border-[var(--border)] bg-[var(--bg)] text-[var(--text)] text-sm px-3 py-2 focus:border-[var(--accent)] focus:outline-none flex-1'
-  const btnClass = 'px-3 py-2 rounded bg-[var(--accent)] text-white text-sm hover:opacity-90 shrink-0'
+  const btnClass = 'px-3 py-2 rounded bg-[var(--accent)] text-[var(--on-accent)] text-sm hover:opacity-90 shrink-0'
 
   return (
     <div className="space-y-8">
